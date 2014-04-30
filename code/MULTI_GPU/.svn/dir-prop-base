@@ -1,0 +1,10 @@
+K 10
+svn:ignore
+V 90
+.small.mtx.swo
+.chesapeake.mtx.swo
+.project
+.~lock.GASengine2VSvertexAPI2.docx#
+.cproject
+
+END

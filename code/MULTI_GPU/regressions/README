@@ -1,0 +1,44 @@
+Running Full Regressions and Performance Comparisons
+----------------------------------------------------
+
+To run the full set of regressions and performance comparisons you will first
+need to install PowerGraph.  We recommend this release: graphlabapi_v2.1.4679.tar.gz
+
+Get the downloads here: https://code.google.com/p/graphlabapi/downloads/list
+
+See the graphlab documentation for their installation instructions.
+
+To download the large graphs we use for testing you will need wget and python
+installed.  Go into the directory ../largePerformanceGraphs/ and type 'make'.
+This will download all the necessary graphs and massage them into the correct
+format.
+
+To build the powergraph reference implementations, go into
+PowerGraphReferenceImplementations/ and edit the Makefile so that GRPAHLAB_DIR
+points to the location where you installed graphlab.  Then type 'make' to build
+the reference programs.
+
+To run the regressions go into regressions/. Type:
+
+'make gold' to run the reference implementations on the datasets.
+'make test' to run the GPU GAS Engine programs on the datasets.
+'make regress' to compare the results.
+
+'make' will run all three commands at once.
+
+The generated files have the following format:
+
+[graph_name].[algorithm].gold       - reference result file
+[graph_name].[algorithm].test       - GPU result file
+[graph_name].[algorithm].timing     - reference time in msec
+[graph_name].[algorithm].timing_gpu - GPU time in msec
+[graph_name].[algorithm].pass       - exists if the regression test passed
+
+The largest graph kron_g500-logn21 requires a card with 6GB of RAM to run, if you have
+less, you will receive an out-of-memory error.  Cards with substantially less
+memory may fail on some of the smaller graphs as well.
+
+If you have reportlab installed, then running:
+
+'python chartTest.py' will generate a simple set of bar graphs for displaying
+the relative performance of the GPU GAS Engine vs PowerGraph.

@@ -1,0 +1,40 @@
+10
+
+dir
+186
+svn+ssh://harish-dasari@svn.code.sf.net/p/mpgraph/code/branches/MULTI_GPU/Algorithms
+svn+ssh://harish-dasari@svn.code.sf.net/p/mpgraph/code
+
+
+
+2014-04-22T21:18:58.137811Z
+186
+flameran
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5807b031-c490-42d5-8a13-ac5925f95b64
+
+CC
+dir
+
+PageRank
+dir
+
+SSSP
+dir
+
+BFS
+dir
+

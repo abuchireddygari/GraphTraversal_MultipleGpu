@@ -1,0 +1,132 @@
+Quick Start Guide
+-----------------
+
+MapGraph is Massively Parallel Graph processing on GPUs.
+
+- The MapGraph API makes it easy to develop high performance graph
+  analytics on GPUs. The API is based on the Gather-Apply-Scatter
+  (GAS) model as used in GraphLab. To deliver high performance
+  computation and efficiently utilize the high memory bandwidth of
+  GPUs, MapGraph's CUDA kernels use multiple sophisticated strategies,
+  such as vertex-degree-dependent dynamic parallelism granularity and
+  frontier compaction.
+
+- MapGraph is up to two order of magnitude faster than parallel CPU
+  implementations on up 24 CPU cores and has performance comparable to
+  a state-of-the-art manually optimized GPU implementation.
+
+- New algorithms can be implemented in a few hours that fully exploit
+  the data-level parallelism of the GPU and offer throughput of up to
+  3 billion traversed edges per second on a single GPU.
+
+- Partitioned graphs and Multi-GPU support will be in a future
+  release.
+  
+- There is also a CPU-only version of the MapGraph engine packaged and 
+  distributed inside the bigdata open-source graph database.
+
+
+Building and running MapGraph
+----------------------------
+
+"make" at the top-level will build all algorithms in the ./Algorithms
+directory and the documentation.  Each algorithm accepts some common
+parameters for things like the name of the input matrix, the CUDA
+device on which to execute the algorithm, etc.  In addition, "-help"
+may be used to obtained detailed usage information for a specific
+algorithm.
+
+The CUDA Makefile assumes that CUDA (version >= 5.0) has been
+installed and is in the PATH.
+
+For example, you can run SSSP using:
+
+./Algorithms/SSSP/SSSP -g smallRegressionGraphs/small.mtx
+
+The output should look something like this:
+
+Running on host: bigdata01.systap.com
+Detected 2 CUDA Capable device(s)
+Running on this device:
+Device 0: "Tesla K20c"
+  CUDA Driver Version / Runtime Version          6.0 / 5.5
+  CUDA Capability Major/Minor version number:    3.5
+  Total amount of global memory:                 4800 MBytes (5032706048 bytes)
+Reading from smallRegressionGraphs/chesapeake.mtx:
+  Parsing MARKET COO format  (39 nodes, 170 directed edges)... Done parsing (0s).
+  Converting 39 vertices, 170 directed edges (unordered tuples) to CSR format... Done converting (0s).
+CPU time took: 0.00100001 ms
+source_file_name2=
+origin: 1
+Using single starting vertex!
+Single source vertex!
+NOT streaming from host
+GPU 0 column_indices: 170 elements (2720 bytes)
+GPU 0 row_offsets: 40 elements (160 bytes)
+Starting vertex: 0
+Kernel time took: 1.1487 ms
+Wall time took: 1.159 ms
+Contract time took: 0 ms
+Expand time took: 0 ms
+visited edges: 170
+M-Edges / sec: 0.146678
+Total iteration: 2
+retval: 0
+Correctness testing ...passed
+
+
+If you wish to view the results of a run (which currently consists of all the
+vertices and their final values), then supply a second argument for the output
+file.
+
+./Algorithms/SSSP/SSSP -g smallRegressionGraphs/small.mtx -o small.out
+
+For SSSP, the output is a column whose value is the shortest path distance
+from the starting vertex.
+
+
+MapGraph Directory Structure
+---------------------------
+
+- ./Algorithms - This is the parent directory for the BFS, SSSP, CC,
+   PR and other graph analytics that are bundled with the MapGraph
+   distribution.
+
+- ./doc - The MapGraph documentation.  This includes detailed
+  information on the MapGraph API and how to write your own high
+  performance graph algorithms using MapGraph.  Use "make doc" at the
+  top-level directory to build the documentation. See
+  doc/api/index.html to get started.
+
+- ./bc40 - This directory contains code from the back40computing
+   library. See http://code.google.com/p/back40computing.  This is not
+   a complete copy of that library.  Only those methods that are
+   relevant to graph processing have been included.  The original bc40
+   library provided a high performance implementation of BFS, but did
+   not support any other algorithms.  The bc40 kernels bundled by
+   MapGraph have been extensively adapted to support the MapGraph API.
+
+The following directories support performance and correctness
+regression tests for mapgraph.  See regressions/README for this.
+Correctness testing depends on powergraph (which can be very complex
+to install). We are still in the process of cleaning up and extending
+CI and performance regression testing.
+
+- ./CI - directory for Continuous Integration testing.
+
+- ./regressions - makefile and scripts for regression testing (old).
+
+- ./smallRegressionGraphs - a few very small sample data sets.
+
+- ./largePerformanceGraphs - includes makefiles to download some graphs.
+
+- ./PowerGraphReferenceImplementations - implementations of various
+  algorithms for the powergraph API that are also implemented by
+  MapGraph.  This is for performance comparison against PowerGraph.
+
+----------------------------------
+This work was (partially) funded by the DARPA XDATA program under
+AFRL Contract #FA8750-13-C-0002.
+
+This material is based upon work supported by the Defense Advanced
+Research Projects Agency (DARPA) under Contract No. D14PC00029.
